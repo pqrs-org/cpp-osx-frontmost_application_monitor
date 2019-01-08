@@ -3,17 +3,24 @@
 #include <iostream>
 #include <pqrs/osx/frontmost_application_monitor.hpp>
 
+namespace {
+std::shared_ptr<pqrs::osx::frontmost_application_monitor::monitor> global_monitor;
+}
+
 int main(void) {
   std::signal(SIGINT, [](int) {
+    // Destroy monitor before `CFRunLoopStop(CFRunLoopGetMain())`.
+    global_monitor = nullptr;
+
     CFRunLoopStop(CFRunLoopGetMain());
   });
 
   auto time_source = std::make_shared<pqrs::dispatcher::hardware_time_source>();
   auto dispatcher = std::make_shared<pqrs::dispatcher::dispatcher>(time_source);
 
-  auto monitor = std::make_shared<pqrs::osx::frontmost_application_monitor::monitor>(dispatcher);
+  global_monitor = std::make_shared<pqrs::osx::frontmost_application_monitor::monitor>(dispatcher);
 
-  monitor->frontmost_application_changed.connect([](auto&& application_ptr) {
+  global_monitor->frontmost_application_changed.connect([](auto&& application_ptr) {
     if (application_ptr) {
       std::cout << "frontmost_application_changed" << std::endl;
 
@@ -28,15 +35,13 @@ int main(void) {
     }
   });
 
-  monitor->async_start();
+  global_monitor->async_start();
 
   // ============================================================
 
   CFRunLoopRun();
 
   // ============================================================
-
-  monitor = nullptr;
 
   dispatcher->terminate();
   dispatcher = nullptr;
