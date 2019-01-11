@@ -15,7 +15,7 @@ include_directories(SYSTEM ${CMAKE_CURRENT_LIST_DIR}/vendor/include)
 add_executable(
   example
   main.cpp
-  ../src/pqrs/osx/frontmost_application_monitor/objc.m
+  ../src/pqrs/osx/frontmost_application_monitor/impl/objc.m
 )
 
 target_link_libraries(

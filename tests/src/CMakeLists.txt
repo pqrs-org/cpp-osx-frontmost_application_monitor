@@ -17,7 +17,7 @@ add_executable(
   application_test.cpp
   monitor_test.cpp
   test.cpp
-  ../../src/pqrs/osx/frontmost_application_monitor/objc.m
+  ../../src/pqrs/osx/frontmost_application_monitor/impl/objc.m
 )
 
 target_link_libraries(
