@@ -4,23 +4,20 @@
 #include <pqrs/osx/frontmost_application_monitor.hpp>
 
 namespace {
-std::shared_ptr<pqrs::osx::frontmost_application_monitor::monitor> global_monitor;
+auto global_wait = pqrs::make_thread_wait();
 }
 
 int main(void) {
   std::signal(SIGINT, [](int) {
-    // Destroy monitor before `CFRunLoopStop(CFRunLoopGetMain())`.
-    global_monitor = nullptr;
-
-    CFRunLoopStop(CFRunLoopGetMain());
+    global_wait->notify();
   });
 
   auto time_source = std::make_shared<pqrs::dispatcher::hardware_time_source>();
   auto dispatcher = std::make_shared<pqrs::dispatcher::dispatcher>(time_source);
 
-  global_monitor = std::make_shared<pqrs::osx::frontmost_application_monitor::monitor>(dispatcher);
+  auto monitor = std::make_shared<pqrs::osx::frontmost_application_monitor::monitor>(dispatcher);
 
-  global_monitor->frontmost_application_changed.connect([](auto&& application_ptr) {
+  monitor->frontmost_application_changed.connect([](auto&& application_ptr) {
     if (application_ptr) {
       std::cout << "frontmost_application_changed" << std::endl;
 
@@ -35,7 +32,16 @@ int main(void) {
     }
   });
 
-  global_monitor->async_start();
+  monitor->async_start();
+
+  std::thread thread([&monitor] {
+    global_wait->wait_notice();
+
+    // Destroy monitor before `CFRunLoopStop(CFRunLoopGetMain())`.
+    monitor = nullptr;
+
+    CFRunLoopStop(CFRunLoopGetMain());
+  });
 
   // ============================================================
 
