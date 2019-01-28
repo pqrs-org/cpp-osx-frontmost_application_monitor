@@ -1,6 +1,7 @@
 #include <catch2/catch.hpp>
 
 #include <pqrs/osx/frontmost_application_monitor.hpp>
+#include <unordered_set>
 
 TEST_CASE("application") {
   {
@@ -19,4 +20,8 @@ TEST_CASE("application") {
     REQUIRE(application.get_bundle_identifier() == std::nullopt);
     REQUIRE(application.get_file_path() == std::nullopt);
   }
+}
+
+TEST_CASE("application hash") {
+  std::unordered_set<pqrs::osx::frontmost_application_monitor::application> set;
 }
