@@ -12,6 +12,7 @@ TEST_CASE("boost application") {
 
     pqrs::osx::frontmost_application_monitor::application application2;
 
-    REQUIRE(boost::hash_value(application1) != boost::hash_value(application2));
+    REQUIRE(pqrs::osx::frontmost_application_monitor::hash_value(application1) !=
+            pqrs::osx::frontmost_application_monitor::hash_value(application2));
   }
 }
