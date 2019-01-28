@@ -26,8 +26,16 @@ public:
     return bundle_identifier_;
   }
 
+  void set_bundle_identifier(const std::optional<std::string>& value) {
+    bundle_identifier_ = value;
+  }
+
   const std::optional<std::string>& get_file_path(void) const {
     return file_path_;
+  }
+
+  void set_file_path(const std::optional<std::string>& value) {
+    file_path_ = value;
   }
 
 private:
