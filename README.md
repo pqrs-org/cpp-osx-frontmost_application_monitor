@@ -11,6 +11,7 @@ cpp-osx-frontmost_application_monitor depends the following classes.
 
 - [Nod](https://github.com/fr00b0/nod)
 - [pqrs::dispatcher](https://github.com/pqrs-org/cpp-dispatcher)
+- [pqrs::hash](https://github.com/pqrs-org/cpp-hash).
 - [pqrs::weakify](https://github.com/pqrs-org/objc-weakify)
 
 ## Install
