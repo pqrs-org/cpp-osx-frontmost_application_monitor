@@ -12,6 +12,9 @@ namespace osx {
 namespace frontmost_application_monitor {
 class application final {
 public:
+  application(void) {
+  }
+
   application(const char* bundle_identifier,
               const char* file_path) {
     if (bundle_identifier) {
