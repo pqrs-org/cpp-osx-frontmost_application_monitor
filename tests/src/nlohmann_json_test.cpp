@@ -5,10 +5,9 @@
 
 TEST_CASE("nlohmann_json application") {
   {
-    const char* bundle_identifier = "com.apple.finder";
-    const char* file_path = "/System/Library/CoreServices/Finder.app/Contents/MacOS/Finder";
-    pqrs::osx::frontmost_application_monitor::application application1(bundle_identifier,
-                                                                       file_path);
+    pqrs::osx::frontmost_application_monitor::application application1;
+    application1.set_bundle_identifier("com.apple.finder");
+    application1.set_file_path("/System/Library/CoreServices/Finder.app/Contents/MacOS/Finder");
 
     nlohmann::json json = application1;
 
