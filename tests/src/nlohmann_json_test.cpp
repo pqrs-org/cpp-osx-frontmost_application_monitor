@@ -11,7 +11,7 @@ TEST_CASE("nlohmann_json application") {
 
     nlohmann::json json = application1;
 
-    pqrs::osx::frontmost_application_monitor::application application2 = json;
+    auto application2 = json.get<pqrs::osx::frontmost_application_monitor::application>();
 
     REQUIRE(application1 == application2);
   }

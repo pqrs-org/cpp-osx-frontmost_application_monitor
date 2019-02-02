@@ -5,13 +5,11 @@
 
 TEST_CASE("boost application") {
   {
-    pqrs::osx::frontmost_application_monitor::application application1;
-    application1.set_bundle_identifier("com.apple.finder");
-    application1.set_file_path("/System/Library/CoreServices/Finder.app/Contents/MacOS/Finder");
+    pqrs::osx::frontmost_application_monitor::application application;
+    application.set_bundle_identifier("com.apple.finder");
+    application.set_file_path("/System/Library/CoreServices/Finder.app/Contents/MacOS/Finder");
 
-    pqrs::osx::frontmost_application_monitor::application application2;
-
-    REQUIRE(pqrs::osx::frontmost_application_monitor::hash_value(application1) !=
-            pqrs::osx::frontmost_application_monitor::hash_value(application2));
+    REQUIRE(std::hash<pqrs::osx::frontmost_application_monitor::application>{}(application) ==
+            pqrs::osx::frontmost_application_monitor::hash_value(application));
   }
 }

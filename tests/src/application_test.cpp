@@ -43,4 +43,15 @@ TEST_CASE("application") {
 
 TEST_CASE("application hash") {
   std::unordered_set<pqrs::osx::frontmost_application_monitor::application> set;
+
+  {
+    pqrs::osx::frontmost_application_monitor::application application1;
+    application1.set_bundle_identifier("com.apple.finder");
+    application1.set_file_path("/System/Library/CoreServices/Finder.app/Contents/MacOS/Finder");
+
+    pqrs::osx::frontmost_application_monitor::application application2;
+
+    REQUIRE(std::hash<pqrs::osx::frontmost_application_monitor::application>{}(application1) !=
+            std::hash<pqrs::osx::frontmost_application_monitor::application>{}(application2));
+  }
 }
