@@ -1,6 +1,6 @@
 catchorg/Catch2
 fr00b0/nod
-nlohmann/json
 pqrs-org/cpp-dispatcher
 pqrs-org/cpp-hash
+pqrs-org/cpp-json
 pqrs-org/objc-weakify
