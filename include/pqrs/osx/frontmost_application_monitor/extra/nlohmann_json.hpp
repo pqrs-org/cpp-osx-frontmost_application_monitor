@@ -32,13 +32,13 @@ inline void from_json(const nlohmann::json& j, application& s) {
   for (const auto& [key, value] : j.items()) {
     if (key == "bundle_identifier") {
       if (!value.is_string()) {
-        throw pqrs::json::unmarshal_error("`bundle_identifier` must be string, but is `"s + value.dump() + "`"s);
+        throw pqrs::json::unmarshal_error("`"s + key + "` must be string, but is `"s + value.dump() + "`"s);
       }
       s.set_bundle_identifier(value.get<std::string>());
 
     } else if (key == "file_path") {
       if (!value.is_string()) {
-        throw pqrs::json::unmarshal_error("`file_path` must be string, but is `"s + value.dump() + "`"s);
+        throw pqrs::json::unmarshal_error("`"s + key + "` must be string, but is `"s + value.dump() + "`"s);
       }
       s.set_file_path(value.get<std::string>());
 
