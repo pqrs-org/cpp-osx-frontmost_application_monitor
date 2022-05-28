@@ -14,10 +14,6 @@ project (test)
 
 add_executable(
   test
-  application_test.cpp
-  boost_test.cpp
-  monitor_test.cpp
-  nlohmann_json_test.cpp
   test.cpp
   ../../src/pqrs/osx/frontmost_application_monitor/impl/objc.m
 )
