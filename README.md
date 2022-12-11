@@ -25,10 +25,10 @@ cget install pqrs-org/cget-recipes
 cget install pqrs-org/cpp-osx-frontmost_application_monitor
 ```
 
-And then, add `cget/src/pqrs/osx/frontmost_application_monitor/objc.m` to your project sources.
+And then, add `cget/src/pqrs/osx/frontmost_application_monitor/impl/objc.m` to your project sources.
 
 ### Manual install
 
 Copy `include/pqrs` directory into your include directory.
 
-And then, add `src/pqrs/osx/frontmost_application_monitor/objc.m` to your project sources.
+And then, add `src/pqrs/osx/frontmost_application_monitor/impl/objc.m` to your project sources.
