@@ -3,7 +3,7 @@
 
 # cpp-osx-frontmost_application_monitor
 
-A utility of `SCDynamicStoreCopyConsoleUser`.
+A utility of `NSRunningApplication`.
 
 ## Requirements
 
