@@ -12,7 +12,6 @@ cpp-osx-frontmost_application_monitor depends the following classes.
 - [Nod](https://github.com/fr00b0/nod)
 - [pqrs::dispatcher](https://github.com/pqrs-org/cpp-dispatcher)
 - [pqrs::hash](https://github.com/pqrs-org/cpp-hash).
-- [pqrs::weakify](https://github.com/pqrs-org/objc-weakify)
 
 ## Install
 
@@ -25,10 +24,16 @@ cget install pqrs-org/cget-recipes
 cget install pqrs-org/cpp-osx-frontmost_application_monitor
 ```
 
-And then, add `cget/src/pqrs/osx/frontmost_application_monitor/impl/objc.m` to your project sources.
+And then configure your project as follows:
+
+- Add `cget/src/pqrs/osx/frontmost_application_monitor/impl.swift`
+- Add `include/pqrs/osx/frontmost_application_monitor/impl/Bridging-Header.h` as Bridging Header.
 
 ### Manual install
 
 Copy `include/pqrs` directory into your include directory.
 
-And then, add `src/pqrs/osx/frontmost_application_monitor/impl/objc.m` to your project sources.
+And then configure your project as follows:
+
+- Add `cget/src/pqrs/osx/frontmost_application_monitor/impl.swift`
+- Add `include/pqrs/osx/frontmost_application_monitor/impl/Bridging-Header.h` as Bridging Header.
