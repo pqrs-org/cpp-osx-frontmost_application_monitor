@@ -1,7 +1,6 @@
 import AppKit
 
-@MainActor
-private class Monitor {
+private actor Monitor {
   static let shared = Monitor()
 
   struct Callback {
@@ -18,7 +17,7 @@ private class Monitor {
     notificationCenter.addObserver(
       forName: NSWorkspace.didActivateApplicationNotification,
       object: sharedWorkspace,
-      queue: OperationQueue.main
+      queue: nil
     ) { note in
       guard let userInfo = note.userInfo else {
         print("Missing notification info on NSWorkspace.didActivateApplicationNotification")
@@ -26,8 +25,8 @@ private class Monitor {
       }
       let runningApplication = userInfo[NSWorkspace.applicationUserInfoKey] as! NSRunningApplication
 
-      Task { @MainActor in
-        self.runCallback(runningApplication)
+      Task.detached {
+        await self.runCallback(runningApplication)
       }
     }
   }
@@ -81,14 +80,14 @@ func register(
   _ function: pqrs_osx_frontmost_application_monitor_callback,
   _ context: pqrs_osx_frontmost_application_monitor_callback_context
 ) {
-  Task { @MainActor in
-    Monitor.shared.register(
+  Task.detached {
+    await Monitor.shared.register(
       Monitor.Callback(
         function: function,
         context: context
       ))
 
-    Monitor.shared.runCallbackWithFrontmostApplication()
+    await Monitor.shared.runCallbackWithFrontmostApplication()
   }
 }
 
@@ -97,8 +96,8 @@ func unregister(
   _ function: pqrs_osx_frontmost_application_monitor_callback,
   _ context: pqrs_osx_frontmost_application_monitor_callback_context
 ) {
-  Task { @MainActor in
-    Monitor.shared.unregister(
+  Task.detached {
+    await Monitor.shared.unregister(
       Monitor.Callback(
         function: function,
         context: context
