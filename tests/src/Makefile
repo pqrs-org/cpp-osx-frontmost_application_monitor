@@ -1,12 +1,10 @@
 all:
-	mkdir -p build \
-		&& cd build \
-		&& cmake .. \
-		&& make
+	xcodegen generate
+	xcodebuild -configuration Release -alltargets SYMROOT="$(CURDIR)/build"
 	make run
 
 clean:
 	rm -rf build
 
 run:
-	./build/test
+	./build/Release/test
