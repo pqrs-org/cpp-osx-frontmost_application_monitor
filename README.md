@@ -27,7 +27,7 @@ cget install pqrs-org/cpp-osx-frontmost_application_monitor
 And then configure your project as follows:
 
 - Add `cget/src/pqrs/osx/frontmost_application_monitor/impl.swift`
-- Add `include/pqrs/osx/frontmost_application_monitor/impl/Bridging-Header.h` as Bridging Header.
+- Add `cget/include/pqrs/osx/frontmost_application_monitor/impl/Bridging-Header.h` as Bridging Header.
 
 ### Manual install
 
@@ -35,5 +35,5 @@ Copy `include/pqrs` directory into your include directory.
 
 And then configure your project as follows:
 
-- Add `cget/src/pqrs/osx/frontmost_application_monitor/impl.swift`
+- Add `src/pqrs/osx/frontmost_application_monitor/impl.swift`
 - Add `include/pqrs/osx/frontmost_application_monitor/impl/Bridging-Header.h` as Bridging Header.
