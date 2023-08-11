@@ -4,6 +4,7 @@ all:
 
 clean:
 	rm -rf build
+	rm -rf *.xcodeproj
 
 run:
 	./build/Release/example
