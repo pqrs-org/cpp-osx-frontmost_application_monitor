@@ -3,4 +3,3 @@ fr00b0/nod
 pqrs-org/cpp-dispatcher
 pqrs-org/cpp-hash
 pqrs-org/cpp-json
-pqrs-org/objc-weakify

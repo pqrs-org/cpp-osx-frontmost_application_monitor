@@ -1,14 +1,12 @@
 all:
-	mkdir -p build \
-		&& cd build \
-		&& cmake .. \
-		&& make
+	xcodegen generate
+	xcodebuild -configuration Release -alltargets SYMROOT="$(CURDIR)/build"
 
 clean:
 	rm -rf build
 
 run:
-	./build/example
+	./build/Release/example
 
 update_vendor:
 	rm -rf vendor
