@@ -11,7 +11,7 @@ targets:
           - -Wall
           - -Werror
           - "-std=c++20"
-      - path: ../src/pqrs/osx/frontmost_application_monitor/impl.swift
+      - path: ../src/PQRSOSXFrontmostApplicationMonitorImpl.swift
     settings:
       base:
         OTHER_SWIFT_FLAGS: "-warnings-as-errors"

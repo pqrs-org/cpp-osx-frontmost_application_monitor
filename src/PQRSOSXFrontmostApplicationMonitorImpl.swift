@@ -4,8 +4,8 @@
 
 import AppKit
 
-private actor Monitor {
-  static let shared = Monitor()
+private actor PQRSOSXFrontmostApplicationMonitor {
+  static let shared = PQRSOSXFrontmostApplicationMonitor()
 
   struct Callback {
     let function: pqrs_osx_frontmost_application_monitor_callback
@@ -85,13 +85,13 @@ func register(
   _ context: pqrs_osx_frontmost_application_monitor_callback_context
 ) {
   Task.detached {
-    await Monitor.shared.register(
-      Monitor.Callback(
+    await PQRSOSXFrontmostApplicationMonitor.shared.register(
+      PQRSOSXFrontmostApplicationMonitor.Callback(
         function: function,
         context: context
       ))
 
-    await Monitor.shared.runCallbackWithFrontmostApplication()
+    await PQRSOSXFrontmostApplicationMonitor.shared.runCallbackWithFrontmostApplication()
   }
 }
 
@@ -101,8 +101,8 @@ func unregister(
   _ context: pqrs_osx_frontmost_application_monitor_callback_context
 ) {
   Task.detached {
-    await Monitor.shared.unregister(
-      Monitor.Callback(
+    await PQRSOSXFrontmostApplicationMonitor.shared.unregister(
+      PQRSOSXFrontmostApplicationMonitor.Callback(
         function: function,
         context: context
       ))
