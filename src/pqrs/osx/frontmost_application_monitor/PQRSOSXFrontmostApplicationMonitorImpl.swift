@@ -58,7 +58,7 @@ private actor PQRSOSXFrontmostApplicationMonitor {
   func runCallback(_ runningApplication: NSRunningApplication) {
     for c in callbacks {
       let bundleIdentifier = runningApplication.bundleIdentifier ?? ""
-      let path = runningApplication.executableURL?.absoluteString ?? ""
+      let path = runningApplication.executableURL?.path ?? ""
 
       bundleIdentifier.utf8CString.withUnsafeBufferPointer { bundleIdentifierPtr in
         path.utf8CString.withUnsafeBufferPointer { pathPtr in
