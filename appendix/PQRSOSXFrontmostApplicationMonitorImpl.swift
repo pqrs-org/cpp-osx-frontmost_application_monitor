@@ -27,7 +27,14 @@ private actor PQRSOSXFrontmostApplicationMonitor {
         print("Missing notification info on NSWorkspace.didActivateApplicationNotification")
         return
       }
-      let runningApplication = userInfo[NSWorkspace.applicationUserInfoKey] as! NSRunningApplication
+
+      guard
+        let runningApplication = userInfo[NSWorkspace.applicationUserInfoKey]
+          as? NSRunningApplication
+      else {
+        print("Missing runningApplication on NSWorkspace.didActivateApplicationNotification")
+        return
+      }
 
       Task.detached {
         await self.runCallback(runningApplication)
