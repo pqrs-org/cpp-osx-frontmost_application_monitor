@@ -15,30 +15,30 @@ int main(void) {
   auto time_source = std::make_shared<pqrs::dispatcher::hardware_time_source>();
   auto dispatcher = std::make_shared<pqrs::dispatcher::dispatcher>(time_source);
 
-  auto monitor = std::make_shared<pqrs::osx::frontmost_application_monitor::monitor>(dispatcher);
+  pqrs::osx::frontmost_application_monitor::monitor::initialize_shared_monitor(dispatcher);
+
+  auto monitor = pqrs::osx::frontmost_application_monitor::monitor::get_shared_monitor();
 
   monitor->frontmost_application_changed.connect([](auto&& application_ptr) {
     if (application_ptr) {
-      std::cout << "frontmost_application_changed" << std::endl;
-
       if (auto& bundle_identifier = application_ptr->get_bundle_identifier()) {
-        std::cout << "  bundle_identifier: " << *bundle_identifier << std::endl;
+        std::cout << "bundle_identifier: " << *bundle_identifier << std::endl;
       }
-      if (auto& file_path = application_ptr->get_file_path()) {
-        std::cout << "  file_path: " << *file_path << std::endl;
-      }
-
-      std::cout << std::endl;
     }
   });
 
-  monitor->async_start();
+  monitor->frontmost_application_changed.connect([](auto&& application_ptr) {
+    if (application_ptr) {
+      if (auto& file_path = application_ptr->get_file_path()) {
+        std::cout << "file_path: " << *file_path << std::endl;
+      }
+    }
+  });
 
-  std::thread thread([&monitor] {
+  std::thread thread([] {
     global_wait->wait_notice();
 
-    // Destroy monitor before `CFRunLoopStop(CFRunLoopGetMain())`.
-    monitor = nullptr;
+    pqrs::osx::frontmost_application_monitor::monitor::terminate_shared_monitor();
 
     CFRunLoopStop(CFRunLoopGetMain());
   });

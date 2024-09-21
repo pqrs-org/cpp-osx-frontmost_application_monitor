@@ -10,15 +10,11 @@ extern "C" {
 
 // Do not use these functions directly.
 
-typedef void* pqrs_osx_frontmost_application_monitor_callback_context;
 typedef void (*pqrs_osx_frontmost_application_monitor_callback)(const char* bundle_identifier,
-                                                                const char* file_path,
-                                                                pqrs_osx_frontmost_application_monitor_callback_context context);
+                                                                const char* file_path);
 
-void pqrs_osx_frontmost_application_monitor_register(pqrs_osx_frontmost_application_monitor_callback callback,
-                                                     void* context);
-void pqrs_osx_frontmost_application_monitor_unregister(pqrs_osx_frontmost_application_monitor_callback callback,
-                                                       void* context);
+void pqrs_osx_frontmost_application_monitor_register(pqrs_osx_frontmost_application_monitor_callback callback);
+void pqrs_osx_frontmost_application_monitor_unregister(pqrs_osx_frontmost_application_monitor_callback callback);
 
 #ifdef __cplusplus
 }

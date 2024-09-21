@@ -4,7 +4,7 @@ targets:
   test:
     type: tool
     platform: macOS
-    deploymentTarget: "11.0"
+    deploymentTarget: "13.0"
     sources:
       - path: test.cpp
         compilerFlags:
