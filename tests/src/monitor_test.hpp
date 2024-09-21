@@ -11,7 +11,6 @@ void run_monitor_test(void) {
     auto dispatcher = std::make_shared<pqrs::dispatcher::dispatcher>(time_source);
 
     for (int i = 0; i < 10000; ++i) {
-      printf("%d\n", i);
       auto wait = pqrs::make_thread_wait();
 
       pqrs::osx::frontmost_application_monitor::monitor::initialize_shared_monitor(dispatcher);

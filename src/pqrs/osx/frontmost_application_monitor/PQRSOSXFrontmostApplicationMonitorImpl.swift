@@ -3,11 +3,13 @@
 // (See https://www.boost.org/LICENSE_1_0.txt)
 
 import AppKit
+import os
 
-private actor PQRSOSXFrontmostApplicationMonitor {
+private class PQRSOSXFrontmostApplicationMonitor {
   static let shared = PQRSOSXFrontmostApplicationMonitor()
 
   var callback: pqrs_osx_frontmost_application_monitor_callback?
+  let lock = OSAllocatedUnfairLock()
 
   init() {
     let sharedWorkspace = NSWorkspace.shared
@@ -34,27 +36,31 @@ private actor PQRSOSXFrontmostApplicationMonitor {
       let bundleIdentifier = runningApplication.bundleIdentifier ?? ""
       let path = runningApplication.executableURL?.path ?? ""
 
-      Task.detached {
-        await self.runCallback(bundleIdentifier: bundleIdentifier, path: path)
-      }
+      self.runCallback(bundleIdentifier: bundleIdentifier, path: path)
     }
   }
 
   func setCallback(_ callback: pqrs_osx_frontmost_application_monitor_callback) {
-    self.callback = callback
+    lock.withLock {
+      self.callback = callback
+    }
   }
 
   func unsetCallback() {
-    callback = nil
+    lock.withLock {
+      callback = nil
+    }
   }
 
   func runCallback(bundleIdentifier: String, path: String) {
-    bundleIdentifier.utf8CString.withUnsafeBufferPointer { bundleIdentifierPtr in
-      path.utf8CString.withUnsafeBufferPointer { pathPtr in
-        callback?(
-          bundleIdentifierPtr.baseAddress,
-          pathPtr.baseAddress
-        )
+    lock.withLock {
+      bundleIdentifier.utf8CString.withUnsafeBufferPointer { bundleIdentifierPtr in
+        path.utf8CString.withUnsafeBufferPointer { pathPtr in
+          callback?(
+            bundleIdentifierPtr.baseAddress,
+            pathPtr.baseAddress
+          )
+        }
       }
     }
   }
@@ -73,21 +79,15 @@ private actor PQRSOSXFrontmostApplicationMonitor {
 func PQRSOSXFrontmostApplicationMonitorSetCallback(
   _ callback: pqrs_osx_frontmost_application_monitor_callback
 ) {
-  Task.detached {
-    await PQRSOSXFrontmostApplicationMonitor.shared.setCallback(callback)
-  }
+  PQRSOSXFrontmostApplicationMonitor.shared.setCallback(callback)
 }
 
 @_cdecl("pqrs_osx_frontmost_application_monitor_unset_callback")
 func PQRSOSXFrontmostApplicationMonitorUnsetCallback() {
-  Task.detached {
-    await PQRSOSXFrontmostApplicationMonitor.shared.unsetCallback()
-  }
+  PQRSOSXFrontmostApplicationMonitor.shared.unsetCallback()
 }
 
 @_cdecl("pqrs_osx_frontmost_application_monitor_trigger")
 func PQRSOSXFrontmostApplicationMonitorTrigger() {
-  Task.detached {
-    await PQRSOSXFrontmostApplicationMonitor.shared.runCallbackWithFrontmostApplication()
-  }
+  PQRSOSXFrontmostApplicationMonitor.shared.runCallbackWithFrontmostApplication()
 }

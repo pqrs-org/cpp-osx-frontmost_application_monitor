@@ -26,16 +26,14 @@ private:
   monitor(const monitor&) = delete;
 
   monitor(std::weak_ptr<dispatcher::dispatcher> weak_dispatcher) : dispatcher_client(weak_dispatcher) {
-    enqueue_to_dispatcher([] {
-      pqrs_osx_frontmost_application_monitor_set_callback(static_cpp_callback);
-    });
+    pqrs_osx_frontmost_application_monitor_set_callback(static_cpp_callback);
   }
 
 public:
   virtual ~monitor(void) {
-    detach_from_dispatcher([] {
-      pqrs_osx_frontmost_application_monitor_unset_callback();
-    });
+    pqrs_osx_frontmost_application_monitor_unset_callback();
+
+    detach_from_dispatcher();
   }
 
   static void initialize_shared_monitor(std::weak_ptr<dispatcher::dispatcher> weak_dispatcher) {
