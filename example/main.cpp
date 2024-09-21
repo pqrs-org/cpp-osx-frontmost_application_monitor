@@ -17,23 +17,27 @@ int main(void) {
 
   pqrs::osx::frontmost_application_monitor::monitor::initialize_shared_monitor(dispatcher);
 
-  auto monitor = pqrs::osx::frontmost_application_monitor::monitor::get_shared_monitor();
+  auto weak_monitor = pqrs::osx::frontmost_application_monitor::monitor::get_shared_monitor();
 
-  monitor->frontmost_application_changed.connect([](auto&& application_ptr) {
-    if (application_ptr) {
-      if (auto& bundle_identifier = application_ptr->get_bundle_identifier()) {
-        std::cout << "bundle_identifier: " << *bundle_identifier << std::endl;
+  if (auto m = weak_monitor.lock()) {
+    m->frontmost_application_changed.connect([](auto&& application_ptr) {
+      if (application_ptr) {
+        if (auto& bundle_identifier = application_ptr->get_bundle_identifier()) {
+          std::cout << "bundle_identifier: " << *bundle_identifier << std::endl;
+        }
       }
-    }
-  });
+    });
 
-  monitor->frontmost_application_changed.connect([](auto&& application_ptr) {
-    if (application_ptr) {
-      if (auto& file_path = application_ptr->get_file_path()) {
-        std::cout << "file_path: " << *file_path << std::endl;
+    m->frontmost_application_changed.connect([](auto&& application_ptr) {
+      if (application_ptr) {
+        if (auto& file_path = application_ptr->get_file_path()) {
+          std::cout << "file_path: " << *file_path << std::endl;
+        }
       }
-    }
-  });
+    });
+
+    m->trigger();
+  }
 
   std::thread thread([] {
     global_wait->wait_notice();

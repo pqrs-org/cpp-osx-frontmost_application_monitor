@@ -7,11 +7,7 @@ import AppKit
 private actor PQRSOSXFrontmostApplicationMonitor {
   static let shared = PQRSOSXFrontmostApplicationMonitor()
 
-  struct Callback {
-    let function: pqrs_osx_frontmost_application_monitor_callback
-  }
-
-  var callbacks: [Callback] = []
+  var callback: pqrs_osx_frontmost_application_monitor_callback?
 
   init() {
     let sharedWorkspace = NSWorkspace.shared
@@ -44,35 +40,21 @@ private actor PQRSOSXFrontmostApplicationMonitor {
     }
   }
 
-  func register(_ callback: Callback) {
-    for c in callbacks {
-      let ptr1 = unsafeBitCast(c.function, to: Optional<UnsafeRawPointer>.self)
-      let ptr2 = unsafeBitCast(callback.function, to: Optional<UnsafeRawPointer>.self)
-      if ptr1 == ptr2 {
-        return
-      }
-    }
-
-    callbacks.append(callback)
+  func setCallback(_ callback: pqrs_osx_frontmost_application_monitor_callback) {
+    self.callback = callback
   }
 
-  func unregister(_ callback: Callback) {
-    callbacks.removeAll(where: {
-      let ptr1 = unsafeBitCast($0.function, to: Optional<UnsafeRawPointer>.self)
-      let ptr2 = unsafeBitCast(callback.function, to: Optional<UnsafeRawPointer>.self)
-      return ptr1 == ptr2
-    })
+  func unsetCallback() {
+    callback = nil
   }
 
   func runCallback(bundleIdentifier: String, path: String) {
-    for c in callbacks {
-      bundleIdentifier.utf8CString.withUnsafeBufferPointer { bundleIdentifierPtr in
-        path.utf8CString.withUnsafeBufferPointer { pathPtr in
-          c.function(
-            bundleIdentifierPtr.baseAddress,
-            pathPtr.baseAddress
-          )
-        }
+    bundleIdentifier.utf8CString.withUnsafeBufferPointer { bundleIdentifierPtr in
+      path.utf8CString.withUnsafeBufferPointer { pathPtr in
+        callback?(
+          bundleIdentifierPtr.baseAddress,
+          pathPtr.baseAddress
+        )
       }
     }
   }
@@ -87,24 +69,25 @@ private actor PQRSOSXFrontmostApplicationMonitor {
   }
 }
 
-@_cdecl("pqrs_osx_frontmost_application_monitor_register")
-func register(_ function: pqrs_osx_frontmost_application_monitor_callback) {
+@_cdecl("pqrs_osx_frontmost_application_monitor_set_callback")
+func PQRSOSXFrontmostApplicationMonitorSetCallback(
+  _ callback: pqrs_osx_frontmost_application_monitor_callback
+) {
   Task.detached {
-    await PQRSOSXFrontmostApplicationMonitor.shared.register(
-      PQRSOSXFrontmostApplicationMonitor.Callback(
-        function: function
-      ))
-
-    await PQRSOSXFrontmostApplicationMonitor.shared.runCallbackWithFrontmostApplication()
+    await PQRSOSXFrontmostApplicationMonitor.shared.setCallback(callback)
   }
 }
 
-@_cdecl("pqrs_osx_frontmost_application_monitor_unregister")
-func unregister(_ function: pqrs_osx_frontmost_application_monitor_callback) {
+@_cdecl("pqrs_osx_frontmost_application_monitor_unset_callback")
+func PQRSOSXFrontmostApplicationMonitorUnsetCallback() {
   Task.detached {
-    await PQRSOSXFrontmostApplicationMonitor.shared.unregister(
-      PQRSOSXFrontmostApplicationMonitor.Callback(
-        function: function
-      ))
+    await PQRSOSXFrontmostApplicationMonitor.shared.unsetCallback()
+  }
+}
+
+@_cdecl("pqrs_osx_frontmost_application_monitor_trigger")
+func PQRSOSXFrontmostApplicationMonitorTrigger() {
+  Task.detached {
+    await PQRSOSXFrontmostApplicationMonitor.shared.runCallbackWithFrontmostApplication()
   }
 }

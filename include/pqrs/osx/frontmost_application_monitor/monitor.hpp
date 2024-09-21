@@ -27,14 +27,14 @@ private:
 
   monitor(std::weak_ptr<dispatcher::dispatcher> weak_dispatcher) : dispatcher_client(weak_dispatcher) {
     enqueue_to_dispatcher([] {
-      pqrs_osx_frontmost_application_monitor_register(static_cpp_callback);
+      pqrs_osx_frontmost_application_monitor_set_callback(static_cpp_callback);
     });
   }
 
 public:
   virtual ~monitor(void) {
     detach_from_dispatcher([] {
-      pqrs_osx_frontmost_application_monitor_unregister(static_cpp_callback);
+      pqrs_osx_frontmost_application_monitor_unset_callback();
     });
   }
 
@@ -50,10 +50,16 @@ public:
     shared_monitor_ = nullptr;
   }
 
-  static std::shared_ptr<monitor> get_shared_monitor(void) {
+  // Return a weak_ptr instead of a shared_ptr to keep the use_count of shared_monitor_ as close to 1 as possible,
+  // ensuring that terminate_shared_monitor will properly release shared_monitor_.
+  static std::weak_ptr<monitor> get_shared_monitor(void) {
     std::lock_guard<std::mutex> guard(mutex_);
 
     return shared_monitor_;
+  }
+
+  void trigger(void) {
+    pqrs_osx_frontmost_application_monitor_trigger();
   }
 
 private:

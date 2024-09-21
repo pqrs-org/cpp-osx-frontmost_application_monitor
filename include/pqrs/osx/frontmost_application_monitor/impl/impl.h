@@ -13,8 +13,9 @@ extern "C" {
 typedef void (*pqrs_osx_frontmost_application_monitor_callback)(const char* bundle_identifier,
                                                                 const char* file_path);
 
-void pqrs_osx_frontmost_application_monitor_register(pqrs_osx_frontmost_application_monitor_callback callback);
-void pqrs_osx_frontmost_application_monitor_unregister(pqrs_osx_frontmost_application_monitor_callback callback);
+void pqrs_osx_frontmost_application_monitor_set_callback(pqrs_osx_frontmost_application_monitor_callback callback);
+void pqrs_osx_frontmost_application_monitor_unset_callback(void);
+void pqrs_osx_frontmost_application_monitor_trigger(void);
 
 #ifdef __cplusplus
 }
