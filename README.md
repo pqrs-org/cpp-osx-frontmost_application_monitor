@@ -16,3 +16,8 @@ cpp-osx-frontmost_application_monitor depends the following classes.
 ## Install
 
 Copy `include/pqrs` and `vendor/vendor/include` directories into your include directory.
+
+And then configure your project as follows:
+
+- Add `src/pqrs/osx/frontmost_application_monitor/PQRSOSXFrontmostApplicationMonitorImpl.swift`
+- Add `include/pqrs/osx/frontmost_application_monitor/impl/Bridging-Header.h` as Bridging Header.
