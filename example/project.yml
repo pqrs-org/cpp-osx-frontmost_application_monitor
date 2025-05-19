@@ -18,4 +18,4 @@ targets:
         SWIFT_OBJC_BRIDGING_HEADER: ../include/pqrs/osx/frontmost_application_monitor/impl/Bridging-Header.h
         SYSTEM_HEADER_SEARCH_PATHS:
           - ../include
-          - vendor/include
+          - ../vendor/vendor/include
