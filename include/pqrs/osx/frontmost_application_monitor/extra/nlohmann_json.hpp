@@ -7,9 +7,7 @@
 #include <pqrs/json.hpp>
 #include <pqrs/osx/frontmost_application_monitor/application.hpp>
 
-namespace pqrs {
-namespace osx {
-namespace frontmost_application_monitor {
+namespace pqrs::osx::frontmost_application_monitor {
 inline void to_json(nlohmann::json& j, const application& s) {
   j = nlohmann::json::object();
 
@@ -61,6 +59,4 @@ inline void from_json(const nlohmann::json& j, application& s) {
     }
   }
 }
-} // namespace frontmost_application_monitor
-} // namespace osx
-} // namespace pqrs
+} // namespace pqrs::osx::frontmost_application_monitor

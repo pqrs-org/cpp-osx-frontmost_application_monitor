@@ -2,7 +2,7 @@
 #include <iostream>
 #include <pqrs/osx/frontmost_application_monitor.hpp>
 
-void run_monitor_test(void) {
+void run_monitor_test() {
   using namespace boost::ut;
   using namespace boost::ut::literals;
 

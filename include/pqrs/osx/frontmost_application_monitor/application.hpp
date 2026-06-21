@@ -8,15 +8,12 @@
 #include <pqrs/hash.hpp>
 #include <string>
 
-namespace pqrs {
-namespace osx {
-namespace frontmost_application_monitor {
+namespace pqrs::osx::frontmost_application_monitor {
 class application final {
 public:
-  application(void) {
-  }
+  application() noexcept = default;
 
-  const std::optional<std::string>& get_bundle_identifier(void) const {
+  [[nodiscard]] const std::optional<std::string>& get_bundle_identifier() const noexcept {
     return bundle_identifier_;
   }
 
@@ -25,7 +22,7 @@ public:
     return *this;
   }
 
-  const std::optional<std::string>& get_bundle_path(void) const {
+  [[nodiscard]] const std::optional<std::string>& get_bundle_path() const noexcept {
     return bundle_path_;
   }
 
@@ -34,7 +31,7 @@ public:
     return *this;
   }
 
-  const std::optional<std::string>& get_file_path(void) const {
+  [[nodiscard]] const std::optional<std::string>& get_file_path() const noexcept {
     return file_path_;
   }
 
@@ -43,7 +40,7 @@ public:
     return *this;
   }
 
-  const std::optional<pid_t>& get_pid(void) const {
+  [[nodiscard]] const std::optional<pid_t>& get_pid() const noexcept {
     return pid_;
   }
 
@@ -52,16 +49,7 @@ public:
     return *this;
   }
 
-  bool operator==(const application& other) const {
-    return bundle_identifier_ == other.bundle_identifier_ &&
-           bundle_path_ == other.bundle_path_ &&
-           file_path_ == other.file_path_ &&
-           pid_ == other.pid_;
-  }
-
-  bool operator!=(const application& other) const {
-    return !(*this == other);
-  }
+  [[nodiscard]] bool operator==(const application& other) const = default;
 
 private:
   std::optional<std::string> bundle_identifier_;
@@ -69,14 +57,12 @@ private:
   std::optional<std::string> file_path_;
   std::optional<pid_t> pid_;
 };
-} // namespace frontmost_application_monitor
-} // namespace osx
-} // namespace pqrs
+} // namespace pqrs::osx::frontmost_application_monitor
 
 namespace std {
 template <>
 struct hash<pqrs::osx::frontmost_application_monitor::application> final {
-  std::size_t operator()(const pqrs::osx::frontmost_application_monitor::application& value) const {
+  [[nodiscard]] std::size_t operator()(const pqrs::osx::frontmost_application_monitor::application& value) const {
     size_t h = 0;
 
     if (auto& bundle_identifier = value.get_bundle_identifier()) {

@@ -2,7 +2,7 @@
 #include <pqrs/osx/frontmost_application_monitor.hpp>
 #include <unordered_set>
 
-void run_application_test(void) {
+void run_application_test() {
   using namespace boost::ut;
   using namespace boost::ut::literals;
 
@@ -47,13 +47,13 @@ void run_application_test(void) {
       application2.set_bundle_identifier(bundle_identifier);
 
       pqrs::osx::frontmost_application_monitor::application application3;
-      application2.set_bundle_path(bundle_path);
+      application3.set_bundle_path(bundle_path);
 
       pqrs::osx::frontmost_application_monitor::application application4;
-      application3.set_file_path(file_path);
+      application4.set_file_path(file_path);
 
       pqrs::osx::frontmost_application_monitor::application application5;
-      application3.set_pid(pid);
+      application5.set_pid(pid);
 
       pqrs::osx::frontmost_application_monitor::application application6;
 

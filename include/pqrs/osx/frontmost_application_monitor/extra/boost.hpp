@@ -6,12 +6,8 @@
 
 #include <pqrs/osx/frontmost_application_monitor/application.hpp>
 
-namespace pqrs {
-namespace osx {
-namespace frontmost_application_monitor {
-inline std::size_t hash_value(const application& value) {
+namespace pqrs::osx::frontmost_application_monitor {
+[[nodiscard]] inline std::size_t hash_value(const application& value) {
   return std::hash<application>{}(value);
 }
-} // namespace frontmost_application_monitor
-} // namespace osx
-} // namespace pqrs
+} // namespace pqrs::osx::frontmost_application_monitor

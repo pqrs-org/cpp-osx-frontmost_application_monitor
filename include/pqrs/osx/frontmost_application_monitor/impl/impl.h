@@ -18,8 +18,8 @@ typedef void (*pqrs_osx_frontmost_application_monitor_callback)(const char* bund
                                                                 pid_t pid);
 
 void pqrs_osx_frontmost_application_monitor_set_callback(pqrs_osx_frontmost_application_monitor_callback callback);
-void pqrs_osx_frontmost_application_monitor_unset_callback(void);
-void pqrs_osx_frontmost_application_monitor_trigger(void);
+void pqrs_osx_frontmost_application_monitor_unset_callback();
+void pqrs_osx_frontmost_application_monitor_trigger();
 
 #ifdef __cplusplus
 }
