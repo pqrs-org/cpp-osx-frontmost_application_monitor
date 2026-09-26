@@ -16,6 +16,10 @@
 
 namespace pqrs::osx::frontmost_application_monitor {
 class monitor final : public dispatcher::extra::dispatcher_client {
+private:
+  // Keep the guard first so member initialization failures also detach.
+  pqrs::dispatcher::extra::dispatcher_client_constructor_exception_guard dispatcher_client_constructor_exception_guard_{*this};
+
 public:
   // Signals (invoked from the dispatcher thread)
 
@@ -28,6 +32,7 @@ private:
   monitor& operator=(const monitor&) = delete;
 
   monitor(std::weak_ptr<dispatcher::dispatcher> weak_dispatcher) : dispatcher_client(weak_dispatcher) {
+    dispatcher_client_constructor_exception_guard_.initialize();
   }
 
 public:
