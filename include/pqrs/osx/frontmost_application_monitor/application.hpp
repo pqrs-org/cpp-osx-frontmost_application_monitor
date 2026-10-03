@@ -11,8 +11,6 @@
 namespace pqrs::osx::frontmost_application_monitor {
 class application final {
 public:
-  application() noexcept = default;
-
   [[nodiscard]] const std::optional<std::string>& get_bundle_identifier() const noexcept {
     return bundle_identifier_;
   }
