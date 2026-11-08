@@ -11,6 +11,11 @@ targets:
           - -Wall
           - -Werror
           - "-std=c++23"
+      - path: ../vendor/vendor/src/pqrs/osx/autorelease_pool/PQRSOSXAutoreleasePoolImpl.m
+        compilerFlags:
+          - -Wall
+          - -Werror
+          - -fno-objc-arc
       - path: ../src
     settings:
       base:

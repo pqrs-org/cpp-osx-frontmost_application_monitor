@@ -1,6 +1,7 @@
 #include <Carbon/Carbon.h>
 #include <csignal>
 #include <iostream>
+#include <pqrs/osx/autorelease_pool.hpp>
 #include <pqrs/osx/frontmost_application_monitor.hpp>
 
 namespace {
@@ -13,7 +14,9 @@ int main() {
   });
 
   auto time_source = std::make_shared<pqrs::dispatcher::hardware_time_source>();
-  auto dispatcher = std::make_shared<pqrs::dispatcher::dispatcher>(time_source);
+  auto dispatcher = std::make_shared<pqrs::dispatcher::dispatcher>(
+      time_source,
+      pqrs::osx::autorelease_pool::execute_with_autorelease_pool);
 
   pqrs::osx::frontmost_application_monitor::monitor::initialize_shared_monitor(dispatcher);
 
